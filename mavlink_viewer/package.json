@@ -1,0 +1,100 @@
+{
+  "name": "mavlink-viewer",
+  "version": "1.0.0",
+  "description": "MAVLink数据可视化客户端 - Electron + Vue3 + TailwindCSS",
+  "main": "src/main/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:electron\"",
+    "dev:renderer": "vite",
+    "dev:electron": "wait-on http://localhost:5173 && electron .",
+    "build": "vite build && electron-builder",
+    "build:win": "vite build && electron-builder --win",
+    "build:mac": "vite build && electron-builder --mac",
+    "build:linux": "vite build && electron-builder --linux",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue src"
+  },
+  "keywords": [
+    "mavlink",
+    "electron",
+    "vue3",
+    "visualization",
+    "gps",
+    "telemetry"
+  ],
+  "author": "MAVLink Viewer Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-writer": "^1.6.0",
+    "express": "^4.18.2",
+    "leaflet": "^1.9.4",
+    "node-mavlink": "^1.5.0",
+    "pinia": "^2.1.7",
+    "proj4": "^2.9.2",
+    "proj4leaflet": "^1.0.2",
+    "serialport": "^12.0.0",
+    "vue": "^3.4.15"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.3",
+    "autoprefixer": "^10.4.17",
+    "concurrently": "^8.2.2",
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.20.1",
+    "lucide-vue-next": "^0.312.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.12",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.mavlink.viewer",
+    "productName": "MAVLink Viewer",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "src/main/**/*",
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/serialport/**/*",
+      "node_modules/@serialport/**/*",
+      "node_modules/node-mavlink/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "sign": null,
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MAVLink Viewer"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "build/icon.png"
+    }
+  }
+}
